@@ -24,7 +24,6 @@ const start = [];
 
 for (let i = 0; i < h; i++) {
   for (let j = 0; j < w; j++) {
-    // afterMap[i][j].push(map[i][j]);
     afterMap[i][j] = new Array(Max).fill(map[i][j]);
 
     if (map[i][j] === "*") waters.push([i, j]);
@@ -33,12 +32,7 @@ for (let i = 0; i < h; i++) {
   }
 }
 
-waterBFS();
-
-console.log(findBFS());
-
-// console.table(afterMap);
-
+// 실제 고슴도치가 굴을 찾는 BFS
 function findBFS() {
   const q = [[start[0], start[1], 0]];
 
@@ -74,6 +68,7 @@ function findBFS() {
   return "KAKTUS";
 }
 
+// 물이 차는 것을 알기위한 BFS
 function waterBFS() {
   const q = [];
 
@@ -81,9 +76,6 @@ function waterBFS() {
 
   while (q.length) {
     const [y, x, t] = q.shift();
-
-    // console.log(q);
-    // console.log(y, x, t, afterMap[y][x][t]);
 
     for (let i = 0; i < 4; i++) {
       const ny = y + dy[i];
@@ -98,6 +90,8 @@ function waterBFS() {
       // 이동하려는 칸이 다음 초에 다음 시점에 '.'이 아닌 경우.
       if (afterMap[ny][nx][t + 1] !== ".") continue;
 
+      // 한 번 물이 찬 블럭은 다음 시점에도 물이 차있기 때문에 
+      // 물이 차있다고 처리해줌.
       for (let j = t + 1; j < Max; j++) {
         afterMap[ny][nx][j] = "*";
       }
@@ -106,3 +100,7 @@ function waterBFS() {
     }
   }
 }
+
+waterBFS();
+
+console.log(findBFS());
