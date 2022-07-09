@@ -9,14 +9,10 @@ const N = Number(input.shift());
 
 const map = input.map((v) => v.split(" ").map(Number));
 
-// console.table(map);
-
 const dy = [-1, 0, 0, 1];
 const dx = [0, -1, 1, 0];
 
 const eats = new Array(7).fill(0);
-
-console.log(bfs());
 
 function bfs() {
   // 시작 위치 찾기.
@@ -36,34 +32,19 @@ function bfs() {
   while (true) {
     const q = [];
     const visited = Array.from({ length: N }, () => new Array(N).fill(false));
-
+    // 먹이들의 위치를 담을 배열 => 상, 좌 순으로만 탐색해서는 제대로 비교할 수 없음.
+    const smallq = [];
     let movCnt = 0;
 
     // [y, x, 이동거리]
     q.push([...cur, 0]);
 
-    const smallq = [];
-
     // 실질적인 BFS
     while (q.length) {
-      // 이동거리가 필요하지 레벨이 필요한 게 아님.
       const [y, x, cnt] = q.shift();
 
       // 먹이 발견
       if (map[y][x] < lv && map[y][x] !== 0) {
-        // map[y][x] = 0;
-
-        // eats[lv]++;
-
-        // if (eats[lv] === lv) {
-        //   // 레벨 업
-        //   lv++;
-        // }
-        // cur = [y, x];
-        // movCnt = cnt;
-
-        // break;
-
         smallq.push([y, x, cnt]);
       }
 
@@ -86,8 +67,8 @@ function bfs() {
     }
 
     if (smallq.length) {
+      // 거리 => 위쪽 => 왼쪽으로 정렬.
       smallq.sort((a, b) => {
-        // return a[2] - b[2] && a[0] - b[0] && [1] - b[1];
         if (a[2] !== b[2]) {
           return a[2] - b[2];
         } else {
@@ -99,25 +80,26 @@ function bfs() {
         }
       });
 
-      // feed
+      // feed의 위치와 거리
       const [fy, fx, fCnt] = smallq[0];
 
       map[fy][fx] = 0;
-
       eats[lv]++;
+
+      // 레벨 업
       if (eats[lv] === lv) {
-        //   // 레벨 업
         lv++;
       }
       cur = [fy, fx];
       movCnt = fCnt;
     }
-
-    // 변동이 없는 경우.
-    if (movCnt === 0) {
+    // 종료 조건 => 먹이 큐가 빈 경우.
+    else {
       return dist;
     }
 
     dist += movCnt;
   }
 }
+
+console.log(bfs());
