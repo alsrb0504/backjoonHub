@@ -8,55 +8,16 @@ let input = require("fs")
 const N = Number(input.shift());
 
 const map = [];
-
 const answer = [];
-
-let visited = Array.from({ length: N }, () => new Array(N).fill(false));
 const dy = [-1, 0, 1, 0];
 const dx = [0, 1, 0, -1];
 
-for (let i = 0; i < N; i++) {
-  map[i] = input[i].trimEnd().split("");
-}
-
+let visited = Array.from({ length: N }, () => new Array(N).fill(false));
 let norCnt = 0;
 let weakCnt = 0;
 
-for (let i = 0; i < N; i++) {
-  for (let j = 0; j < N; j++) {
-    if (!visited[i][j]) {
-      norCnt++;
-      bfs(i, j, map[i][j]);
-    }
-  }
-}
-
-answer.push(norCnt);
-
-for (let i = 0; i < N; i++) {
-  for (let j = 0; j < N; j++) {
-    if (map[i][j] === "R") map[i][j] = "G";
-  }
-}
-
-visited = Array.from({ length: N }, () => new Array(N).fill(false));
-
-for (let i = 0; i < N; i++) {
-  for (let j = 0; j < N; j++) {
-    if (!visited[i][j]) {
-      weakCnt++;
-      bfs(i, j, map[i][j]);
-    }
-  }
-}
-
-answer.push(weakCnt);
-
-console.log(answer.join(" "));
-
 function bfs(sY, sX, color) {
   const q = [];
-
   q.push([sY, sX]);
 
   while (q.length) {
@@ -77,3 +38,43 @@ function bfs(sY, sX, color) {
     }
   }
 }
+
+for (let i = 0; i < N; i++) {
+  map[i] = input[i].trimEnd().split("");
+}
+
+// 정상인의 경우
+for (let i = 0; i < N; i++) {
+  for (let j = 0; j < N; j++) {
+    if (!visited[i][j]) {
+      norCnt++;
+      bfs(i, j, map[i][j]);
+    }
+  }
+}
+
+answer.push(norCnt);
+
+// 적록색약을 위해 색 변경.
+for (let i = 0; i < N; i++) {
+  for (let j = 0; j < N; j++) {
+    if (map[i][j] === "R") map[i][j] = "G";
+  }
+}
+
+// 방문 배열 다시 초기화
+visited = Array.from({ length: N }, () => new Array(N).fill(false));
+
+// 적록색약의 경우
+for (let i = 0; i < N; i++) {
+  for (let j = 0; j < N; j++) {
+    if (!visited[i][j]) {
+      weakCnt++;
+      bfs(i, j, map[i][j]);
+    }
+  }
+}
+
+answer.push(weakCnt);
+
+console.log(answer.join(" "));
