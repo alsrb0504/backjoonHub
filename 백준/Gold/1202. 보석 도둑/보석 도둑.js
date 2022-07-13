@@ -1,25 +1,3 @@
-const readFileSyncAddress = '/dev/stdin';
-
-let input = require("fs")
-  .readFileSync(readFileSyncAddress)
-  .toString()
-  .split("\n");
-
-const [N, K] = input.shift().trimEnd().split(" ").map(Number);
-
-const jewels = [];
-const bags = [];
-let result = 0;
-
-for (let i = 0; i < N; i++) jewels.push(input[i].split(" ").map(Number));
-for (let i = N; i < N + K; i++) bags.push(Number(input[i]));
-
-// 무게 순 내림차순 + 같으면 가성비 높은 순.
-jewels.sort((a, b) => a[0] - b[0]);
-
-// 무게 순 내림차순.
-bags.sort((a, b) => a - b);
-
 class maxHeap {
   constructor() {
     this.q = [null];
@@ -50,7 +28,6 @@ class maxHeap {
 
   heapPop() {
     // 빈 경우
-    // if (this.size() === 1) return -1;
     // 예외 처리.
     if (this.size() === 1) return [0, 0];
 
@@ -79,7 +56,6 @@ class maxHeap {
       (this.q[leftidx] && this.q[curidx][1] < this.q[leftidx][1]) ||
       (this.q[rightidx] && this.q[curidx][1] < this.q[rightidx][1])
     ) {
-
       let maxidx = 0;
 
       if (this.q[rightidx]) {
@@ -99,15 +75,41 @@ class maxHeap {
   }
 }
 
+const readFileSyncAddress = '/dev/stdin';
+
+let input = require("fs")
+  .readFileSync(readFileSyncAddress)
+  .toString()
+  .split("\n");
+
+const [N, K] = input.shift().trimEnd().split(" ").map(Number);
+
+const jewels = [];
+const bags = [];
+let result = 0;
+
+for (let i = 0; i < N; i++) jewels.push(input[i].split(" ").map(Number));
+for (let i = N; i < N + K; i++) bags.push(Number(input[i]));
+
+// 무게 순 내림차순 + 같으면 가성비 높은 순.
+jewels.sort((a, b) => a[0] - b[0]);
+
+// 무게 순 내림차순.
+bags.sort((a, b) => a - b);
+
 const heap = new maxHeap();
 
+// 한 번 탐색한 보석은 다시 보지 않기 위한 index
 let jewelIdx = 0;
+
 bags.forEach((w) => {
   for (let i = jewelIdx; i < jewels.length; i++) {
     if (jewels[i][0] <= w) {
       jewelIdx++;
       heap.heapPush(jewels[i]);
-    } else {
+    }
+    // 무게 초과하는 보석이 나오면 탐색 중지.
+    else {
       break;
     }
   }
