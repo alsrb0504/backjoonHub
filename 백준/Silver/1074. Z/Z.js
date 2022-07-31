@@ -1,5 +1,4 @@
 const { exit } = require("process");
-
 const readFileSyncAddress = '/dev/stdin';
 
 let input = require("fs")
@@ -8,28 +7,20 @@ let input = require("fs")
   .split(" ");
 
 const [N, r, c] = input;
-let cnt = 0;
-
 const endY = Number(r);
 const endX = Number(c);
 
 solution(0, 0, Math.pow(2, N), 0);
 
 function solution(y, x, length, accCnt) {
+  // 예외 처리 : 현재 위치가 정확히 찾는 위치일 경우
   if (y === endY && x === endX) {
     console.log(accCnt);
     exit(0);
   }
 
-  // 4등분 하고 순서대로 하면 되내
   if (length === 2) {
     let endFlag = false;
-
-    // console.log(y, x, length);
-    // console.log(y, x);
-    // console.log(y, x + 1);
-    // console.log(y + 1, x);
-    // console.log(y + 1, x + 1);
     let finalCnt = accCnt;
 
     if (y === endY && x === endX) {
@@ -45,34 +36,28 @@ function solution(y, x, length, accCnt) {
       finalCnt = accCnt + 3;
     }
 
+    // 종료 조건 : 찾았다면 종료.
     if (endFlag) {
       console.log(finalCnt);
       exit(0);
     }
 
-    // cnt += 4;
     return;
   }
 
   let half = length / 2;
 
-  // console.log(y, x, length, half, accCnt);
-  //
   if (endY < y + half && endX < x + half) {
-    // console.log(1);
     solution(y, x, half, accCnt);
   }
   if (endY < y + half && endX >= x + half) {
-    // console.log(2);
-
-    solution(y, x + half, half, accCnt + half * half);
+    const nextCnt = accCnt + half * half;
+    solution(y, x + half, half, nextCnt);
   } else if (endY >= y + half && endX < x + half) {
-    // console.log(3);
-
-    solution(y + half, x, half, accCnt + half * half * 2);
+    const nextCnt = accCnt + half * half * 2;
+    solution(y + half, x, half, nextCnt);
   } else {
-    // console.log(4);
-
-    solution(y + half, x + half, half, accCnt + half * half * 3);
+    const nextCnt = accCnt + half * half * 3;
+    solution(y + half, x + half, half, nextCnt);
   }
 }
