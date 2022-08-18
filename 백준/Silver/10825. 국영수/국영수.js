@@ -18,10 +18,7 @@ list.sort((a, b) => {
   if (a[1] === b[1]) {
     if (a[2] === b[2]) {
       if (a[3] === b[3]) {
-        // return b[0] - a[0];
-        if (a[0] > b[0]) return 1;
-        else if (a[0] < b[0]) return -1;
-        else return 0;
+        return a[0] > b[0] ? 1 : -1;
       } else return b[3] - a[3];
     } else {
       return a[2] - b[2];
@@ -30,6 +27,7 @@ list.sort((a, b) => {
     return b[1] - a[1];
   }
 });
+
 
 let answer = "";
 list.forEach((info) => (answer += `${info[0] + "\n"}`));
