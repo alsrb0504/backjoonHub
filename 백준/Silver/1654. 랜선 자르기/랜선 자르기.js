@@ -15,10 +15,11 @@ for (let i = 1; i <= K; i++) {
 
 const max = Math.max.apply(null, cables);
 
+let answer = 0;
 let high = max;
 let low = 1;
 
-while (true) {
+while (low <= high) {
   const mid = Math.floor((high + low) / 2);
   let cnt = 0;
 
@@ -27,30 +28,12 @@ while (true) {
     cnt += pieces;
   });
 
-
   if (cnt < N) {
-    //
     high = mid - 1;
-    //
   } else {
-    if (check(mid)) {
-      console.log(mid);
-      break;
-    }
-
+    answer = mid;
     low = mid + 1;
   }
 }
 
-function check(num) {
-  const nextNum = num + 1;
-  let cnt = 0;
-
-  cables.forEach((v) => {
-    const pieces = Math.floor(v / nextNum);
-    cnt += pieces;
-  });
-
-  if (cnt < N) return true;
-  else return false;
-}
+console.log(answer);
