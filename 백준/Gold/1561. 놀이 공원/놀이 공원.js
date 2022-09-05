@@ -18,7 +18,6 @@ const max = Math.max.apply(null, nums);
 
 let answer = 0;
 let start = 0;
-// let end = max * Math.floor(N / M);
 let end = max * N;
 
 let minTime = Infinity;
@@ -45,14 +44,15 @@ nums.forEach((n) => {
   prevCnt += Math.floor((minTime - 1) / n);
 });
 
-nums.forEach((n, idx) => {
-  if (minTime % n === 0) {
+for (let i = 0; i < M; i++) {
+  if (minTime % nums[i] === 0) {
     prevCnt++;
   }
 
-  if (prevCnt === N && answer === 0) {
-    answer = idx + 1;
+  if (prevCnt === N) {
+    answer = i + 1;
+    break;
   }
-});
+}
 
 console.log(answer);
