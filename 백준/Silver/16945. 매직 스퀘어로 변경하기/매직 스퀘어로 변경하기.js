@@ -7,7 +7,7 @@ let input = require("fs")
 const std = [];
 
 for (let i = 0; i < 3; i++) {
-  const [n1, n2, n3] = input[i].split(" ");
+  const [n1, n2, n3] = input[i].split(" ").map(Number);
 
   std.push(n1);
   std.push(n2);
