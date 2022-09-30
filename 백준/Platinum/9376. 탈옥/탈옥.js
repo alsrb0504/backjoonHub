@@ -4,25 +4,12 @@ let input = require("fs")
   .toString()
   .split("\n");
 
+// 미리 맵을 구현.
 const map = Array.from({ length: 102 }, () => new Array(102).fill("."));
 
 const dy = [0, 0, -1, 1];
 const dx = [-1, 1, 0, 0];
-
 const MAX = Number.MAX_SAFE_INTEGER;
-
-const testCnt = Number(input[0]);
-let answer = "";
-let lineCnt = 1;
-
-for (let t = 0; t < testCnt; t++) {
-  const [curLineCnt, _] = input[lineCnt].split(" ").map(Number);
-
-  answer += solution(lineCnt) + "\n";
-  lineCnt += curLineCnt + 1;
-}
-
-console.log(answer.trimEnd());
 
 function solution(curline) {
   const [h, w] = input[curline].split(" ").map(Number);
@@ -43,6 +30,8 @@ function solution(curline) {
 
   const prisoner = [];
 
+  // visited 배열을 3차원으로 하지 않고 각각 분리 및 BFS함수도 각각 만듦.
+  // 다 동일한 로직
   const visitedOne = Array.from({ length: h + 2 }, () =>
     new Array(w + 2).fill(MAX)
   );
@@ -73,8 +62,6 @@ function solution(curline) {
         const ny = y + dy[i];
         const nx = x + dx[i];
 
-        // if (ny === 0 || nx === 0 || ny === h + 1 || nx === w + 1) continue;
-        // if (ny < 1 || ny > h || nx < 1 || nx > w) continue;
         if (ny < 0 || ny > h + 1 || nx < 0 || nx > w + 1) continue;
 
         if (map[ny][nx] === "*") continue;
@@ -96,10 +83,6 @@ function solution(curline) {
   }
 
   function prisonerTwoBfs(sy, sx) {
-    // visitedTwo[0][0] = 0;
-    // const deq = [[0, 0, 0]];
-
-    // 왜 시작점을 주면 시간초과가 발생할까?
     visitedTwo[sy][sx] = 0;
     const deq = [[sy, sx, 0]];
 
@@ -110,7 +93,6 @@ function solution(curline) {
         const ny = y + dy[i];
         const nx = x + dx[i];
 
-        // if (ny < 1 || ny > h || nx < 1 || nx > w) continue;
         if (ny < 0 || ny > h + 1 || nx < 0 || nx > w + 1) continue;
 
         if (map[ny][nx] === "*") continue;
@@ -183,19 +165,18 @@ function solution(curline) {
     }
   }
 
-  // const copy2 = visitedOne.slice(0, h + 1).map((line) => line.slice(0, w + 1));
-
-  // const copy3 = visitedTwo.slice(0, h + 1).map((line) => line.slice(0, w + 1));
-
-  // const copy = visitedZero.slice(0, h + 1).map((line) => line.slice(0, w + 1));
-
-  // console.table(copy2);
-  // console.table(copy3);
-  // console.table(copy);
-
-  // console.table(map.slice(0, h + 1).map((line) => line.slice(0, w + 1)));
-
-  // console.log(prisoner);
-
   return min;
 }
+
+const testCnt = Number(input[0]);
+let answer = "";
+let lineCnt = 1;
+
+for (let t = 0; t < testCnt; t++) {
+  const [curLineCnt, _] = input[lineCnt].split(" ").map(Number);
+
+  answer += solution(lineCnt) + "\n";
+  lineCnt += curLineCnt + 1;
+}
+
+console.log(answer.trimEnd());
