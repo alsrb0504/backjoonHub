@@ -31,14 +31,15 @@ function bfs() {
   while (q.length) {
     const [y, x, cnt, jc] = q.shift();
 
-    // console.log(`[y, x] = [${y}, ${x}], cnt = ${cnt}, jc = ${jc}`);
-
     // 종료 조건이 필요할까? => bfs라 가장 먼저 도착한게 작지 않을까?
     if (y === h - 1 && x === w - 1) {
-      if (answer === -1) answer = cnt;
-      else answer = Math.min(answer, cnt);
+      // if (answer === -1) answer = cnt;
+      // else answer = Math.min(answer, cnt);
 
-      continue;
+      // continue;
+
+      answer = cnt;
+      break;
     }
 
     // 인접 이동
@@ -47,22 +48,11 @@ function bfs() {
       const nx = x + dx[i];
 
       if (!checkBoundary(ny, nx)) continue;
-
-      // console.log(`passed [ny, nx] = [${ny}, ${nx}]`);
-
       if (board[ny][nx] === 1) continue;
-
-      // 문제
-      // 인접 이동으로 더 빠르게 이동할 수 있는데
-      // 이때, 점프 안 한 게 더 느려도 필요하다면..
-
-      // 다음
       if (cnt + 1 >= visited[ny][nx][jc]) continue;
 
       visited[ny][nx][jc] = cnt + 1;
       q.push([ny, nx, cnt + 1, jc]);
-
-      // console.log(`push item : [${ny}, ${nx}, ${cnt + 1}, ${jc}]`);
     }
 
     // 점프 이동
@@ -73,12 +63,10 @@ function bfs() {
 
         if (!checkBoundary(ny, nx)) continue;
         if (board[ny][nx] === 1) continue;
-
         if (cnt + 1 >= visited[ny][nx][jc + 1]) continue;
 
         visited[ny][nx][jc + 1] = cnt + 1;
         q.push([ny, nx, cnt + 1, jc + 1]);
-        // console.log(`push item : [${ny}, ${nx}, ${cnt + 1}, ${jc + 1}]`);
       }
     }
   }
@@ -89,14 +77,6 @@ function checkBoundary(cy, cx) {
   return true;
 }
 
-// console.table(board);
-
-// console.table(visited);
-
 bfs();
 
-// console.table(visited);
-
 console.log(answer);
-
-// console.table(board);
