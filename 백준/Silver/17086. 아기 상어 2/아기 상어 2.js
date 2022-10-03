@@ -14,24 +14,6 @@ const dx = [-1, 1, 0, 0, 1, -1, 1, -1];
 
 let answer = 0;
 
-for (let i = 0; i < h; i++) {
-  for (let j = 0; j < w; j++) {
-    if (map[i][j] === 1) {
-      bfs(i, j);
-    }
-  }
-}
-
-for (let i = 0; i < h; i++) {
-  for (let j = 0; j < w; j++) {
-    if (map[i][j] === 0) {
-      answer = Math.max(answer, visited[i][j]);
-    }
-  }
-}
-
-console.log(answer);
-
 function bfs(sy, sx) {
   const q = [[sy, sx, 0]];
   visited[sy][sx] = 0;
@@ -53,3 +35,21 @@ function bfs(sy, sx) {
     }
   }
 }
+
+for (let i = 0; i < h; i++) {
+  for (let j = 0; j < w; j++) {
+    if (map[i][j] === 1) {
+      bfs(i, j);
+    }
+  }
+}
+
+for (let i = 0; i < h; i++) {
+  for (let j = 0; j < w; j++) {
+    if (map[i][j] === 0) {
+      answer = Math.max(answer, visited[i][j]);
+    }
+  }
+}
+
+console.log(answer);
