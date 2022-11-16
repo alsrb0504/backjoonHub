@@ -28,33 +28,17 @@ let endFlag = false;
 
 for (let i = 1; i < N; i++) {
   endFlag = false;
-
   dist = holes[i] - cur + 1; // 양쪽 0.5
-
-  // console.log(`holes[i] = ${holes[i]}`);
-  // console.log(`cur = ${cur}, dist = ${dist}`);
 
   if (dist === L) {
     answer++;
-    // cur = holes[i];
     cur = holes[i + 1] && holes[i + 1];
-
     endFlag = true;
+  }
 
-    // console.log("붙임");
-    // console.log();
-  } else if (dist < L) {
-    //
-    // console.log("넘어감");
-    // console.log();
-  } else {
+  if (dist > L) {
     answer++;
     cur = holes[i];
-
-    // endFlag = true;
-
-    // console.log("붙이고 다음 구멍 찾음");
-    // console.log();
   }
 }
 
