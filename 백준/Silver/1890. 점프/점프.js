@@ -12,17 +12,13 @@ dp[0][0] = 1n;
 
 for (let i = 0; i < N; i++) {
   for (let j = 0; j < N; j++) {
-    for (let k = 0; k < i; k++) {
-      if (board[k][j] + k === i) {
-        dp[i][j] += dp[k][j];
-      }
-    }
+    if (dp[i][j] === 0n || (i === N - 1 && j === N - 1)) continue;
 
-    for (let k = 0; k < j; k++) {
-      if (board[i][k] + k === j) {
-        dp[i][j] += dp[i][k];
-      }
-    }
+    const rt = j + board[i][j];
+    const dw = i + board[i][j];
+
+    if (rt < N) dp[i][rt] += dp[i][j];
+    if (dw < N) dp[dw][j] += dp[i][j];
   }
 }
 
