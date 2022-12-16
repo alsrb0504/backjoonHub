@@ -7,16 +7,13 @@ let input = require("fs")
 const N = Number(input[0]);
 const nums = input[1]
   .split(" ")
-  .map((el, idx) => [Number(el), idx])
-  .sort((a, b) => a[0] - b[0]);
+  .map(Number)
+  .sort((a, b) => a - b);
 const target = Number(input[2]);
 
 let answer = 0;
-
 let start = 0;
 let end = N - 1;
-
-// console.table(nums);
 
 while (start < end) {
   if (nums[end] > target) {
@@ -24,14 +21,8 @@ while (start < end) {
     continue;
   }
 
-  const sum = nums[start][0] + nums[end][0];
+  const sum = nums[start] + nums[end];
   if (sum === target) {
-    //
-    // console.log(`nums[start] = ${nums[start]}, nums[end] = ${nums[end]}`);
-    // if (nums[start][1] < nums[end][1]) {
-    // console.log(`nums[start] = ${nums[start]}, nums[end] = ${nums[end]}`);
-    // }
-
     answer++;
     start++;
     end--;
