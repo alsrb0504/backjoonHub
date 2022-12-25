@@ -11,9 +11,6 @@ const b2 = input[2].trimEnd().split("");
 const b_length = b1.length;
 let answer = 0n;
 
-// console.log(b1);
-// console.log(b2);
-
 // [cnt, idx]
 const dp1 = Array.from({ length: b_length }, () =>
   new Array(cond_length).fill(0)
@@ -35,7 +32,6 @@ for (let i = 1; i < b_length; i++) {
       let acc = 0;
 
       for (let k = 0; k < i; k++) {
-        //
         acc += dp2[k][j - 1];
       }
 
@@ -50,7 +46,6 @@ for (let i = 1; i < b_length; i++) {
       let acc = 0;
 
       for (let k = 0; k < i; k++) {
-        //
         acc += dp1[k][j - 1];
       }
 
@@ -58,9 +53,6 @@ for (let i = 1; i < b_length; i++) {
     }
   }
 }
-
-// console.table(dp1);
-// console.table(dp2);
 
 for (let i = 0; i < b_length; i++) {
   answer += BigInt(dp1[i][cond_length - 1]);
