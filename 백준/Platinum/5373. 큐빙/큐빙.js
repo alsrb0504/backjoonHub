@@ -37,19 +37,6 @@ function Solution(line) {
     else if (face === "B") RotateBack(oper);
   }
 
-  // 1번째 예제
-  // RotateLeft("-");
-
-  // 2번째 예제
-  // RotateFront("+");
-  // RotateBack("+");
-
-  // 3번째 예제
-  // RotateUp("-");
-  // RotateDown("-");
-  // RotateLeft("+");
-  // RotateRight("+");
-
   return `${cube[0][0].join("")}\n${cube[0][1].join("")}\n${cube[0][2].join(
     ""
   )}`;
@@ -57,8 +44,6 @@ function Solution(line) {
   function RotateRight(dir) {
     RotateMain(5, dir);
 
-    // [ 뒤, 아래, 앞, 위 ]
-    // [ 3, 1, 2, 0]
     const up = [cube[0][0][2], cube[0][1][2], cube[0][2][2]];
     const front = [cube[2][0][2], cube[2][1][2], cube[2][2][2]];
     const bottom = [cube[1][0][2], cube[1][1][2], cube[1][2][2]];
@@ -109,10 +94,6 @@ function Solution(line) {
 
   function RotateDown(dir) {
     RotateMain(1, dir);
-
-    // 아래에서 봤을 때,
-    // up은 앞면(red) -> 오른쪽(blue) -> 뒷면(orange) -> 왼쪽(green)
-    // [ 2, 5, 3, 4 ]
 
     const front = [cube[2][2][0], cube[2][2][1], cube[2][2][2]];
     const right = [cube[5][2][0], cube[5][2][1], cube[5][2][2]];
@@ -170,12 +151,8 @@ function Solution(line) {
     }
   }
 
-  // 백 확실히 완료!
   function RotateBack(dir) {
     RotateMain(3, dir);
-
-    // up은 아래(white) -> 왼쪽(green) -> 위(yellow) -> 오른쪽(blue)
-    // [ 1, 4, 0, 5 ]
 
     const up = [cube[0][0][0], cube[0][0][1], cube[0][0][2]];
     const right = [cube[5][0][2], cube[5][1][2], cube[5][2][2]];
@@ -225,13 +202,8 @@ function Solution(line) {
     }
   }
 
-  // 프론트 확실히 완료!
   function RotateFront(dir) {
     RotateMain(2, dir);
-
-    // 앞에서 봤을 때,
-    // up은 위(white) -> 오른쪽(blue) -> 아래(yellow) -> 왼쪽(green)
-    // [ 0, 5, 1, 4 ]
 
     const up = [cube[0][2][0], cube[0][2][1], cube[0][2][2]];
     const right = [cube[5][0][0], cube[5][1][0], cube[5][2][0]];
@@ -281,13 +253,8 @@ function Solution(line) {
     }
   }
 
-  // 업 확실히 완료!
   function RotateUp(dir) {
     RotateMain(0, dir);
-
-    // 위에서 봤을 때,
-    // up은 뒷면(red) -> 오른쪽(blue) -> 앞면(orange) -> 왼쪽(green)
-    // [ 3, 5, 2, 4 ]
 
     const front = [cube[2][0][0], cube[2][0][1], cube[2][0][2]];
     const left = [cube[4][0][0], cube[4][0][1], cube[4][0][2]];
@@ -345,7 +312,6 @@ function Solution(line) {
     }
   }
 
-  // 레프트 확실히 완료!
   function RotateLeft(dir) {
     RotateMain(4, dir);
 
