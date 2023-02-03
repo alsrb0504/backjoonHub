@@ -5,9 +5,11 @@ const input = require("fs")
   .trimEnd()
   .split("\n");
 
+// 인접한 벽 탐색
 const dy = [0, 0, -1, 1, -1, 1, 1, -1];
 const dx = [-1, 1, 0, 0, 1, 1, -1, -1];
 
+// 2칸 차이나는 벽의 위치를 탐색
 const ddy = [-2, -2, -2, -1, 0, 1, 2, 2, 2, 2, 2, 1, 0, -1, -2, -2];
 const ddx = [0, 1, 2, 2, 2, 2, 2, 1, 0, -1, -2, -2, -2, -2, -2, -1];
 
@@ -29,6 +31,7 @@ if (!bfs(1, 1)) {
   return;
 }
 
+// 예외 : 길이가 1인 경우
 if (H === 1 || W === 1) {
   console.log(1);
   return;
@@ -38,18 +41,14 @@ const block_visited = Array.from({ length: H + 2 }, () =>
   new Array(W + 2).fill(0)
 );
 
-let group_cnt = 1;
-// const possible_group = [];
-
 const possible_set = new Set();
 const possible_map = new Map();
+let group_cnt = 1;
 
 // 벽 탐색
 for (let i = 1; i <= H; i++) {
   for (let j = 1; j <= W; j++) {
     if (map[i][j] === 1 && block_visited[i][j] === 0) {
-      // if (map[i][j] === 1 && block_visited[i][j] === 0) {
-
       const [is_check, up, rt, dn, lt] = blockBfs(i, j, group_cnt);
 
       if (is_check) {
@@ -82,8 +81,6 @@ function makeWall(y, x, idx) {
     if (ny < 0 || nx < 0 || ny > H + 1 || nx > W + 1) continue;
     if (block_visited[ny][nx] === idx || map[ny][nx] === 0) continue;
 
-    // console.log(ny, nx);
-
     const curr = possible_map.get(idx);
 
     if (ny === 0 || ny === H + 1 || nx === 0 || nx === W + 1) {
@@ -97,10 +94,6 @@ function makeWall(y, x, idx) {
 
     if (!possible_set.has(block_visited[ny][nx])) continue;
 
-    // console.log(idx, block_visited[ny][nx]);
-    // console.log(possible_map.get(idx));
-    // console.log(possible_map.get(block_visited[ny][nx]));
-
     const side = possible_map.get(block_visited[ny][nx]);
 
     const sum = new Array(4).fill(0);
@@ -108,10 +101,7 @@ function makeWall(y, x, idx) {
       sum[j] = curr[j] + side[j];
     }
 
-    // console.log(`y = ${y}, x = ${x}`);
-    // console.log(`ny = ${ny}, nx = ${nx}`);
-
-    // 직선
+    // 직선 : 가로 & 세로로 막히는 경우
     if (x === nx && sum[1] > 0 && sum[3] > 0) {
       return true;
     }
@@ -120,34 +110,22 @@ function makeWall(y, x, idx) {
       return true;
     }
 
-    // console.table(map);
-    // console.log(sum);
-
+    // 대각선으로 막을 수 없는 경우.
+    // [ 상, 우, 하, 좌 ]
+    // [ 상, 우 ]가 모두 비어있거나 [ 하, 좌 ]가 모두 비어있는 경우 막을 수 없음.
+    // 그렇지 않은 경우에는 2개의 벽 그룹을 연결해서 길을 막을 수 있음.
     if ((sum[0] === 0 && sum[1] === 0) || (sum[2] === 0 && sum[3] === 0))
       return false;
     else return true;
-
-    // 대각선
-    if ((sum[0] > 0 && sum[3] > 0) || (sum[1] > 0 && sum[2] > 0)) return true;
-    // else return false;  => 90퍼 실패..!
-    // 아 이부분.. 어떻게 하지
-    // else if ((sum[0] > 0 && sum[2] > 0) || (sum[1] > 0 && sum[1] > 0))
-    //   return true;
-    else {
-      console.log(sum);
-
-      return false;
-    }
   }
 
   return false;
 }
 
-// 벽에 붙어있는 친구들만 카운트로 구분해
+// 벽에 붙어있는 친구들만 카운트로 구분.
 function blockBfs(y, x, cnt) {
   const q = [[y, x]];
   block_visited[y][x] = cnt;
-  // let is_possible = false;
 
   // 상, 우, 하, 좌
   let is_possible = [0, 0, 0, 0];
@@ -161,6 +139,7 @@ function blockBfs(y, x, cnt) {
 
       if (block_visited[ny][nx] !== 0 || map[ny][nx] === 0) continue;
 
+      // 벽에 붙어있는 경우 체크
       if (ny === 0 || ny === H + 1 || nx === 0 || nx === W + 1) {
         if (ny === 0) is_possible[0] = 1;
         if (nx === W + 1) is_possible[1] = 1;
@@ -193,8 +172,6 @@ function bfs(y, x) {
       const [ny, nx] = [cy + dy[i], cx + dx[i]];
 
       if (map[ny][nx] === 1 || visited[ny][nx]) continue;
-
-      // if (ny === H && nx === W) return false;
       if (ny === H && nx === W) return true;
 
       visited[ny][nx] = true;
