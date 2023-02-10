@@ -69,23 +69,21 @@ const doors = {
 const [h, w] = input[0].split(" ").map(Number);
 const map = input.slice(1, 1 + h).map((el) => el.split(""));
 
-const visited = Array.from({ length: 65 }, () =>
-  Array.from({ length: h }, () => new Array(w).fill(false))
+const visited = Array.from(
+  { length: h },
+  () => Array.from({ length: w }, () => new Set()) // [keys_bits]
 );
 
-let start = [0, 0];
+const start = [];
 
 for (let i = 0; i < h; i++) {
   for (let j = 0; j < w; j++) {
     if (map[i][j] === "0") {
-      start = [i, j];
+      start.push([i, j]);
       map[i][j] = ".";
     }
   }
 }
-
-// console.table(map);
-// console.table(visited);
 
 console.log(bfs());
 
@@ -94,12 +92,8 @@ function bfs() {
   const dx = [-1, 1, 0, 0];
   const q = new Queue();
 
-  const result = [];
-
-  const [sy, sx] = start;
-
-  q.enqueue([sy, sx, 0, 0]);
-  visited[0][sy][sx] = true;
+  q.enqueue([start[0][0], start[0][1], 0, 0]);
+  visited[start[0][0]][start[0][1]].add(0);
 
   while (!q.isEmpty()) {
     const [y, x, cnt, bit] = q.dequeue();
@@ -107,27 +101,21 @@ function bfs() {
     for (let i = 0; i < 4; i++) {
       const [ny, nx] = [y + dy[i], x + dx[i]];
 
-      if (ny < 0 || nx < 0 || ny >= h || nx >= w) continue;
+      if (ny < 0 || nx < 0 || ny === h || nx === w) continue;
 
       const next = map[ny][nx];
 
-      // 벽
       if (next === "#") continue;
 
       // end
       if (next === "1") {
-        // q.enqueue([ny, nx, cnt + 1, bit]);
-
-        result.push(cnt + 1);
-
-        //
-        // return cnt + 1;
+        return cnt + 1;
       }
       // 빈 벽
       else if (next === ".") {
-        if (!visited[bit][ny][nx]) {
-          visited[bit][ny][nx] = true;
-
+        if (visited[ny][nx].has(bit)) continue;
+        else {
+          visited[ny][nx].add(bit);
           q.enqueue([ny, nx, cnt + 1, bit]);
         }
       }
@@ -137,9 +125,9 @@ function bfs() {
         if (Object.keys(keys).includes(next)) {
           const union_key = bit | keys[next];
 
-          if (!visited[union_key][ny][nx]) {
-            visited[union_key][ny][nx] = true;
-
+          if (visited[ny][nx].has(union_key)) continue;
+          else {
+            visited[ny][nx].add(union_key);
             q.enqueue([ny, nx, cnt + 1, union_key]);
           }
         }
@@ -148,9 +136,9 @@ function bfs() {
           const door = doors[next];
 
           if (bit & door) {
-            if (!visited[bit][ny][nx]) {
-              visited[bit][ny][nx] = true;
-
+            if (visited[ny][nx].has(bit)) continue;
+            else {
+              visited[ny][nx].add(bit);
               q.enqueue([ny, nx, cnt + 1, bit]);
             }
           }
@@ -159,7 +147,5 @@ function bfs() {
     }
   }
 
-  if (result.length > 0) {
-    return Math.min(...result);
-  } else return -1;
+  return -1;
 }
