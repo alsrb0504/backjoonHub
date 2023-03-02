@@ -33,7 +33,7 @@ orders.forEach((next, idx) => {
         } else if (j < next) {
           const diff = next - j;
           dp[i][next][idx + 1] = Math.min(dp[i][next][idx + 1], curr + diff);
-        } else if (i < next && next < j) {
+        } else {
           const upDiff = next - i;
           dp[next][j][idx + 1] = Math.min(dp[next][j][idx + 1], curr + upDiff);
 
@@ -42,8 +42,6 @@ orders.forEach((next, idx) => {
             dp[i][next][idx + 1],
             curr + downDiff
           );
-        } else if (i === next || j === next) {
-          dp[i][j][idx + 1] = Math.min(dp[i][j][idx + 1], curr);
         }
       }
     }
