@@ -6,7 +6,8 @@ function solution(word) {
   for (let i = 1; i <= 5; i++) dfs(0, i);
   arr.sort();
 
-  return arr.findIndex((val) => val === word) + 1;
+  // return arr.findIndex((val) => val === word) + 1;
+    return arr.indexOf(word) + 1;
 
   function dfs(cnt, end) {
     if (cnt === end) {
