@@ -1,5 +1,5 @@
 function solution(book_time) {
-  const MAX_SIZE = 1001;
+  const MAX_SIZE = 1000;
 
   const timeInfo = book_time.map((el) =>
     el.map((time) => Number(time.split(":").join("")))
@@ -10,11 +10,8 @@ function solution(book_time) {
   timeInfo.forEach((el, idx) => {
     let [_, bookEnd] = el;
 
-    let updated = bookEnd + 10;
+    const updated = bookEnd % 100 >= 50 ? bookEnd + 50 : bookEnd + 10;
 
-    if (bookEnd % 100 >= 50) {
-      updated = bookEnd + 100 - 50;
-    }
     timeInfo[idx][1] = updated;
   });
 
@@ -25,12 +22,10 @@ function solution(book_time) {
       let isPossible = true;
 
       for (let [roomStart, roomEnd] of rooms[i]) {
-        if (roomStart >= bookEnd || roomEnd <= bookStart) {
-          continue;
-        } else {
-          isPossible = false;
-          break;
-        }
+       if (!(roomStart >= bookEnd || roomEnd <= bookStart)) {
+            isPossible = false;
+            break;
+          }
       }
 
       if (isPossible) {
