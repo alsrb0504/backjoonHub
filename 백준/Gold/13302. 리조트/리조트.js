@@ -7,13 +7,13 @@ const input = require("fs")
 
 const INF = Infinity;
 const [N, M] = input[0].split(" ").map(Number);
-const block = new Set();
+const block = new Array(110).fill(false);
 const MAX_TICKET = 40;
 
 if (M !== 0) {
   const arr = input[1].split(" ").map(Number);
   arr.forEach((el) => {
-    block.add(el);
+    block[el] = true;
   });
 }
 
@@ -28,7 +28,7 @@ for (let i = 0; i < N; i++) {
     const curr = dp[j][i];
 
     // 바로 다음칸
-    if (block.has(i + 1)) {
+    if (block[i + 1]) {
       dp[j][i + 1] = Math.min(dp[j][i + 1], curr);
     } else {
       dp[j][i + 1] = Math.min(dp[j][i + 1], curr + 10000);
