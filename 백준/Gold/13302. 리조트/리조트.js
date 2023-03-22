@@ -8,7 +8,7 @@ const input = require("fs")
 const INF = Infinity;
 const [N, M] = input[0].split(" ").map(Number);
 const block = new Set();
-const MAX_TICKET = 110;
+const MAX_TICKET = 40;
 
 if (M !== 0) {
   const arr = input[1].split(" ").map(Number);
@@ -17,9 +17,7 @@ if (M !== 0) {
   });
 }
 
-const dp = Array.from({ length: MAX_TICKET }, () =>
-  new Array(MAX_TICKET).fill(INF)
-);
+const dp = Array.from({ length: 110 }, () => new Array(MAX_TICKET).fill(INF));
 
 dp[0][0] = 0;
 
