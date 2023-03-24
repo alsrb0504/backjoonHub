@@ -1,15 +1,6 @@
 function solution(skill, skill_trees) {
   let answer = 0;
 
-  const skill_map = new Map();
-  const skill_set = new Set();
-
-  for (let i = 0; i < skill.length; i++) {
-    const ch = skill[i];
-
-    skill_map.set(ch, i);
-    skill_set.add(ch);
-  }
 
   for (let i = 0; i < skill_trees.length; i++) {
     if (checkSkills(skill_trees[i])) answer++;
@@ -19,8 +10,8 @@ function solution(skill, skill_trees) {
     let cnt = 0;
 
     for (let j = 0; j < str.length; j++) {
-      if (skill_set.has(str[j])) {
-        if (cnt === skill_map.get(str[j])) {
+      if (skill.includes(str[j])) {
+        if (str[j] === skill[cnt]) {
           cnt++;
         } else {
           return false;
@@ -33,3 +24,4 @@ function solution(skill, skill_trees) {
 
   return answer;
 }
+
