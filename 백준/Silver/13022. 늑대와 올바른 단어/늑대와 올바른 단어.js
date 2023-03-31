@@ -7,8 +7,7 @@ const input = require("fs")
 
 const str = input[0].split("");
 const words = [];
-let prev = "-1";
-let acc = 0;
+let [prev, acc] = ["", 0];
 
 for (let ch of str) {
   if (prev !== ch) {
@@ -39,8 +38,6 @@ for (let i = 0; i < Math.floor(words.length / 4); i++) {
 console.log(1);
 
 function checkInvalid(idx) {
-  if (idx + 3 > words.length) return false;
-
   const [_, fir_acc] = words[idx];
 
   if (words[idx][0] !== "w") return false;
