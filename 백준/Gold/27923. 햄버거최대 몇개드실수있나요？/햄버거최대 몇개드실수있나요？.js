@@ -13,15 +13,13 @@ const hamburgeres = input[1]
 
 const cokes = input[2].split(" ").map(Number);
 const cokeMap = new Map();
+const cokeEffects = new Array(N + 1).fill(0);
+const cokeAcc = new Array(N + 1).fill(0);
+let answer = 0;
 
 cokes.forEach((coke) => {
   cokeMap.set(coke, cokeMap.has(coke) ? cokeMap.get(coke) + 1 : 1);
 });
-
-const cokeEffects = new Array(N + 1).fill(0);
-const cokeAcc = new Array(N + 1).fill(0);
-let hamburger_idx = 0;
-let answer = 0;
 
 for (let [key, val] of cokeMap) {
   cokeEffects[key] += val;
@@ -35,15 +33,12 @@ for (let i = 1; i <= N; i++) {
 cokeAcc.sort((a, b) => b - a);
 
 hamburgeres.forEach((hambur, idx) => {
-  if (cokeAcc[idx] === 0) answer += hambur;
-  else {
-    while (hambur !== 0 && cokeAcc[idx] > 0) {
-      hambur = Math.floor(hambur / 2);
-      cokeAcc[idx]--;
-    }
-
-    answer += hambur;
+  while (hambur !== 0 && cokeAcc[idx] > 0) {
+    hambur = Math.floor(hambur / 2);
+    cokeAcc[idx]--;
   }
+
+  answer += hambur;
 });
 
 console.log(answer);
