@@ -23,6 +23,7 @@ for (let x = 0; x < N; x++) {
 }
 
 const answer = [];
+let cost = 0;
 const half = N / 2;
 let [sy, ey, sx, ex] = [half, half + 1, half, half + 1];
 
@@ -30,40 +31,32 @@ while (true) {
   const dir = [];
 
   const top = low_sum[sy - 1][ex] - low_sum[sy - 1][sx - 1];
-  dir.push([top, "U", 1]);
+  if (top > 0) dir.push([top, "U", 1]);
 
   const bottom = low_sum[ey + 1][ex] - low_sum[ey + 1][sx - 1];
-  dir.push([bottom, "D", 2]);
+  if (bottom > 0) dir.push([bottom, "D", 2]);
 
   const left = col_sum[ey][sx - 1] - col_sum[sy - 1][sx - 1];
-  dir.push([left, "L", 3]);
+  if (left > 0) dir.push([left, "L", 3]);
 
   const right = col_sum[ey][ex + 1] - col_sum[sy - 1][ex + 1];
-  dir.push([right, "R", 4]);
+  if (right > 0) dir.push([right, "R", 4]);
+
+  if (dir.length === 0) break;
 
   dir.sort((a, b) => {
     if (b[0] === a[0]) return a[2] - b[2];
     return b[0] - a[0];
   });
 
-  const [next_cost, next_dir] = dir[0];
-
-  if (next_cost <= 0) break;
-
+  const next_dir = dir[0][1];
   answer.push(next_dir);
 
-  if (next_dir === "U") {
-    sy--;
-  } else if (next_dir === "D") {
-    ey++;
-  } else if (next_dir === "L") {
-    sx--;
-  } else {
-    ex++;
-  }
+  if (next_dir === "U") sy--;
+  else if (next_dir === "D") ey++;
+  else if (next_dir === "L") sx--;
+  else ex++;
 }
-
-let cost = 0;
 
 for (let i = sy; i <= ey; i++) {
   cost += low_sum[i][ex] - low_sum[i][sx - 1];
