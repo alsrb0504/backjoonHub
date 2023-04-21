@@ -1,117 +1,86 @@
 function solution(n, m, x, y, r, c, k) {
+  const FAIL = "impossible";
+  const [DOWN, LEFT, RIGHT, UP] = ["d", "l", "r", "u"];
+  const dir = {
+    d: [1, 0],
+    l: [0, -1],
+    r: [0, 1],
+    u: [-1, 0],
+  };
+  const answer = [];
+  let [curY, curX] = [x, y];
+  let [endY, endX] = [r, c];
+  let moveCnt = 0;
+
   // d, l, r, u 순으로 우선 순위가 높음.
 
-  let answer = [];
-  // const board = Array.from({ length: n }, () => new Array(m).fill(""));
+  while (moveCnt < k) {
+    const dist = calcDist();
+    const rest = k - moveCnt;
 
-  let [cy, cx] = [x, y];
-  const [ey, ex] = [r, c];
+    // console.log(`[Log] curY = ${curY}, curX = ${curX}`);
+    // console.log(`[Log] moveCnt = ${moveCnt}`);
 
-  // console.table(board);
+    // 종료 : 이동거리 부족 || 도달 불가능
+    // if (dist > rest) return FAIL;
+    if (dist > rest || (dist < rest && (rest - dist) % 2 !== 0)) return FAIL;
 
-  // let move_cnt = 0;
-  let move_cnt = 1;
+    // 최단 거리로 찾아가야 함
+    if (dist === rest) {
+      let nextDir;
+      //
+      if (curY < endY) nextDir = DOWN;
+      else if (curX > endX) nextDir = LEFT;
+      else if (curX < endX) nextDir = RIGHT;
+      else nextDir = UP;
 
-  while (move_cnt <= k) {
+      answer.push(nextDir);
+      const [ny, nx] = dir[nextDir];
+      [curY, curX] = [curY + ny, curX + nx];
+    }
+    // 더 움직일 수 있음 => d, l, r, u 순으로 남는 방향 이동
+    else {
+      let nextDir;
+
+      if (isDown()) nextDir = DOWN;
+      else if (isLeft()) nextDir = LEFT;
+      else if (isRight()) nextDir = RIGHT;
+      else if (isUp()) nextDir = UP;
+
+      answer.push(nextDir);
+      const [ny, nx] = dir[nextDir];
+      [curY, curX] = [curY + ny, curX + nx];
+    }
+
+    moveCnt++;
+
     // console.log(answer);
-    if (isDown(cy, cx, k - move_cnt)) {
-      cy++;
-      move_cnt++;
-      answer.push("d");
-      continue;
-    }
-
-    if (isLeft(cy, cx, k - move_cnt)) {
-      cx--;
-      move_cnt++;
-      answer.push("l");
-      continue;
-    }
-
-    if (isRight(cy, cx, k - move_cnt)) {
-      cx++;
-      move_cnt++;
-      answer.push("r");
-      continue;
-    }
-
-    if (isUp(cy, cx, k - move_cnt)) {
-      cy--;
-      move_cnt++;
-      answer.push("u");
-      continue;
-    }
-
-    return "impossible";
-  }
-
-  // 아래로 이동 가능
-  function isDown(dy, dx, cnt) {
-    const [py, px] = [dy + 1, dx];
-    const dist = Math.abs(ey - py) + Math.abs(ex - px);
-    const diff = cnt - dist;
-
-    console.log(`py = ${py}, px = ${px}`);
-    console.log(`dist = ${dist}`);
-    console.log(`diff = ${diff}`);
-
-    // 불가능 : 범위 벗어남.
-    if (py > n) return false;
-    // 불가능 : 최단 거리보다 작음.
-    if (diff < 0) return false;
-    // 불가능 : 갈 수 없음.
-    if (diff % 2 === 1) return false;
-
-    return true;
-  }
-
-  // 왼쪽으로 이동 가능
-  function isLeft(dy, dx, cnt) {
-    const [py, px] = [dy, dx - 1];
-    const dist = Math.abs(ey - py) + Math.abs(ex - px);
-    const diff = cnt - dist;
-
-    // 불가능 : 범위 벗어남.
-    if (px <= 0) return false;
-    // 불가능 : 최단 거리보다 작음.
-    if (diff < 0) return false;
-    // 불가능 : 갈 수 없음.
-    if (diff % 2 === 1) return false;
-
-    return true;
-  }
-
-  // 오른쪽으로 이동 가능
-  function isRight(dy, dx, cnt) {
-    const [py, px] = [dy, dx + 1];
-    const dist = Math.abs(ey - py) + Math.abs(ex - px);
-    const diff = cnt - dist;
-
-    // 불가능 : 범위 벗어남.
-    if (px > m) return false;
-    // 불가능 : 최단 거리보다 작음.
-    if (diff < 0) return false;
-    // 불가능 : 갈 수 없음.
-    if (diff % 2 === 1) return false;
-
-    return true;
-  }
-
-  // 위로 이동 가능
-  function isUp(dy, dx, cnt) {
-    const [py, px] = [dy - 1, dx];
-    const dist = Math.abs(ey - py) + Math.abs(ex - px);
-    const diff = cnt - dist;
-
-    // 불가능 : 범위 벗어남.
-    if (py <= 0) return false;
-    // 불가능 : 최단 거리보다 작음.
-    if (diff < 0) return false;
-    // 불가능 : 갈 수 없음.
-    if (diff % 2 === 1) return false;
-
-    return true;
+    // console.log();
   }
 
   return answer.join("");
+
+  function isDown() {
+    if (curY + 1 <= n) return true;
+    return false;
+  }
+
+  function isLeft() {
+    if (curX - 1 > 0) return true;
+    return false;
+  }
+
+  function isRight() {
+    if (curX + 1 <= m) return true;
+    return false;
+  }
+
+  function isUp() {
+    if (curY - 1 > 0) return true;
+    return false;
+  }
+
+  function calcDist() {
+    return Math.abs(curY - endY) + Math.abs(curX - endX);
+  }
 }
