@@ -15,11 +15,6 @@ dp[2] = 2;
 
 for (let i = 3; i <= 40; i++) dp[i] = dp[i - 2] + dp[i - 1];
 
-if (M === 0) {
-  console.log(dp[N]);
-  return;
-}
-
 input.slice(2, 2 + M).forEach((el) => {
   fixed.push(Number(el));
 });
