@@ -73,13 +73,9 @@ function solution(board) {
           CheckOneBoundary(dy) &&
           board[dy][fx] !== 1 &&
           board[dy][sx] !== 1 &&
-          // visited[fy][fx][3] > cnt
           visited[fy][fx][3] > cnt + 1
         ) {
           visited[fy][fx][3] = cnt + 1;
-          // 추가
-          visited[dy][fx][reverse[3]] = cnt + 1;
-
           q.push([[fy, fx], [dy, fx], cnt + 1, 3]);
         }
 
@@ -91,12 +87,9 @@ function solution(board) {
           CheckOneBoundary(uy) &&
           board[uy][fx] !== 1 &&
           board[uy][sx] !== 1 &&
-          // visited[sy][sx][2] > cnt
           visited[sy][sx][2] > cnt + 1
         ) {
           visited[sy][sx][2] = cnt + 1;
-          // 추가
-          visited[uy][sx][reverse[2]] = cnt + 1;
           q.push([[sy, sx], [uy, sx], cnt + 1, 2]);
         }
 
@@ -107,12 +100,9 @@ function solution(board) {
           CheckOneBoundary(dy) &&
           board[dy][fx] !== 1 &&
           board[dy][sx] !== 1 &&
-          // visited[sy][sx][3] > cnt
           visited[sy][sx][3] > cnt + 1
         ) {
           visited[sy][sx][3] = cnt + 1;
-          // 추가
-          visited[dy][sx][reverse[3]] = cnt + 1;
           q.push([[sy, sx], [dy, sx], cnt + 1, 3]);
         }
       }
@@ -125,14 +115,9 @@ function solution(board) {
           CheckOneBoundary(lx) &&
           board[fy][lx] !== 1 &&
           board[sy][lx] !== 1 &&
-          // visited[fy][lx][0] > cnt
-          // visited[fy][lx][0] > cnt + 1
           visited[fy][fx][0] > cnt + 1
         ) {
           visited[fy][fx][0] = cnt + 1;
-
-          // visited[fy][lx][0] = cnt + 1;
-
           q.push([[fy, fx], [fy, lx], cnt + 1, 0]);
         }
 
@@ -142,14 +127,9 @@ function solution(board) {
           CheckOneBoundary(rx) &&
           board[fy][rx] !== 1 &&
           board[sy][rx] !== 1 &&
-          // visited[fy][rx][1] > cnt
-          // visited[fy][rx][1] > cnt + 1
           visited[fy][fx][1] > cnt + 1
         ) {
           visited[fy][fx][1] = cnt + 1;
-
-          // visited[fy][rx][1] = cnt + 1;
-
           q.push([[fy, fx], [fy, rx], cnt + 1, 1]);
         }
 
@@ -159,13 +139,9 @@ function solution(board) {
           CheckOneBoundary(lx) &&
           board[fy][lx] !== 1 &&
           board[sy][lx] !== 1 &&
-          // visited[sy][lx][0] > cnt
-          // visited[sy][lx][0] > cnt + 1
           visited[sy][sx][0] > cnt + 1
         ) {
           visited[sy][sx][0] = cnt + 1;
-
-          // visited[sy][lx][0] = cnt + 1;
           q.push([[sy, sx], [sy, lx], cnt + 1, 0]);
         }
 
@@ -175,29 +151,14 @@ function solution(board) {
           CheckOneBoundary(rx) &&
           board[fy][rx] !== 1 &&
           board[sy][rx] !== 1 &&
-          // visited[sy][rx][1] > cnt
-          // visited[sy][rx][1] > cnt + 1
           visited[sy][sx][1] > cnt + 1
         ) {
           visited[sy][sx][1] = cnt + 1;
-
-          // visited[sy][rx][1] = cnt + 1;
           q.push([[sy, sx], [sy, rx], cnt + 1, 1]);
         }
       }
     }
   }
-
-  // console.table(board);
-  // console.table(visited);
-
-  // console.log(visited[0][2]);
-  // console.log(visited[1][2]);
-  // console.log(visited[2][2]);
-  // console.log(visited[3][2]);
-  // console.log(visited[4][2]);
-
-  // console.log(visited[size - 1][size - 1]);
 
   return Math.min(...visited[size - 1][size - 1]);
 
