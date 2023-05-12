@@ -5,53 +5,10 @@ const input = require("fs")
   .trimEnd()
   .split("\n");
 
-class Node {
-  constructor(data) {
-    this.data = data;
-    this.next = null;
-  }
-}
-
-class Queue {
-  constructor() {
-    this.head = null;
-    this.rear = null;
-    this.length = 0;
-  }
-
-  size() {
-    return this.length;
-  }
-
-  enqueue(data) {
-    const node = new Node(data);
-    if (!this.head) {
-      this.head = node;
-    } else {
-      this.rear.next = node;
-    }
-
-    this.rear = node;
-    this.length++;
-  }
-
-  dequeue() {
-    if (!this.head) {
-      return false;
-    }
-    const data = this.head.data;
-    this.head = this.head.next;
-    this.length--;
-
-    return data;
-  }
-}
-
 const [N, K] = input[0].split(" ").map(Number);
 
 const path = [];
 
-// const visited = Array.from({ length: 2 }, () => new Array(N + 1).fill(0));
 const visited = new Set();
 
 path.push(input[1].trimEnd().split("").map(Number));
@@ -59,14 +16,14 @@ path.push(input[2].trimEnd().split("").map(Number));
 path[0].unshift(-1);
 path[1].unshift(-1);
 
-const q = new Queue();
-q.enqueue({ currX: 1, currY: 0, currT: 0 });
-// const q = [{ currX: 1, currY: 0, currT: 0 }];
+// const q = new Queue();
+// q.enqueue({ currX: 1, currY: 0, currT: 0 });
+const q = [{ currX: 1, currY: 0, currT: 0 }];
 
-while (q.size()) {
-  // const { currX, currY, currT } = q.shift();
+while (q.length) {
+  const { currX, currY, currT } = q.shift();
 
-  const { currX, currY, currT } = q.dequeue();
+  // const { currX, currY, currT } = q.dequeue();
 
   // console.log(currX, currY, currT);
 
@@ -88,8 +45,8 @@ while (q.size()) {
 
     if (!visited.has(key)) {
       visited.add(key);
-      // q.push({ currX: nextX, currY, currT: currT + 1 });
-      q.enqueue({ currX: nextX, currY, currT: currT + 1 });
+      q.push({ currX: nextX, currY, currT: currT + 1 });
+      // q.enqueue({ currX: nextX, currY, currT: currT + 1 });
     }
   }
 
@@ -101,7 +58,8 @@ while (q.size()) {
 
     if (!visited.has(key)) {
       visited.add(key);
-      q.enqueue({ currX: backX, currY, currT: currT + 1 });
+      // q.enqueue({ currX: backX, currY, currT: currT + 1 });
+      q.push({ currX: backX, currY, currT: currT + 1 });
     }
   }
 
@@ -123,8 +81,8 @@ while (q.size()) {
 
         if (!visited.has(key)) {
           visited.add(key);
-          // q.push({ currX: crossX, currY: nextCrossY, currT: currT + 1 });
-          q.enqueue({ currX: crossX, currY: nextCrossY, currT: currT + 1 });
+          q.push({ currX: crossX, currY: nextCrossY, currT: currT + 1 });
+          // q.enqueue({ currX: crossX, currY: nextCrossY, currT: currT + 1 });
         }
       }
     }
