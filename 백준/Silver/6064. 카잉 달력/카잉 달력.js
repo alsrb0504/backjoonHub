@@ -15,41 +15,31 @@ for (let i = 1; i <= N; i++) {
 console.log(answer.join("\n"));
 
 function solution(line) {
-  const [N, M, X, Y] = input[line].split(" ").map(Number);
+  const [M, N, X, Y] = input[line].split(" ").map(Number);
 
   if (X === Y) return X;
-
-  // const set = new Set();
   let min = Infinity;
   let cnt = X;
 
   while (cnt <= N * M) {
-    cnt += N;
-    const rest = cnt % M === 0 ? M : cnt % M;
-
-    // if (set.has(rest)) break;
+    cnt += M;
+    const rest = cnt % N === 0 ? N : cnt % N;
 
     if (rest === Y) {
       min = cnt;
       break;
     }
-
-    // set.add(rest);
   }
 
-  // set.clear();
   cnt = Y;
 
   while (cnt <= N * M) {
-    cnt += M;
-    const rest = cnt % N === 0 ? N : cnt % N;
-    // if (set.has(rest)) break;
+    cnt += N;
+    const rest = cnt % M === 0 ? M : cnt % M;
 
     if (rest === X) {
       return Math.min(cnt, min);
     }
-
-    // set.add(rest);
   }
 
   return -1;
