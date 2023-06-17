@@ -62,8 +62,6 @@ function setParent() {
 }
 
 function LCA(x, y) {
-  let cost = 0;
-
   const [a, b] = [x, y];
 
   // y의 깊이가 더 깊도록 설정
@@ -72,8 +70,6 @@ function LCA(x, y) {
   // 두 노드의 깊이를 동일하게 설정
   for (let i = LOG - 1; i >= 0; i--) {
     if (depthArr[y] - depthArr[x] >= 1 << i) {
-      cost += depthArr[y] - depthArr[x];
-
       y = parent[y][i];
     }
   }
@@ -84,8 +80,6 @@ function LCA(x, y) {
   for (let i = LOG - 1; i >= 0; i--) {
     // 조상을 향해 거슬로 올라감
     if (parent[x][i] !== parent[y][i]) {
-      cost += depthArr[x] + depthArr[y];
-
       x = parent[x][i];
       y = parent[y][i];
     }
