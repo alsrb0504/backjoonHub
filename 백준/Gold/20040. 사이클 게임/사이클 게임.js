@@ -8,13 +8,12 @@ const input = require("fs")
   .split("\n");
 
 const [N, M] = input[0].split(" ").map(Number);
-const arr = [...new Array(N + 1).keys()];
+const arr = [...new Array(N).keys()];
 
 let answer = 1;
-
 let isPossible = false;
-const parentGroup = new Map();
 
+// some
 input.slice(1, 1 + M).some((info) => {
   const [u, v] = info.split(" ").map(Number);
   const uParent = getParent(u);
@@ -26,15 +25,10 @@ input.slice(1, 1 + M).some((info) => {
   }
 
   unionParent(u, v);
-  getParent(u);
-  getParent(v);
-
   answer++;
 });
 
 console.log(isPossible ? answer : 0);
-
-function dfs(node) {}
 
 function getParent(num) {
   if (arr[num] === num) return num;
@@ -49,12 +43,4 @@ function unionParent(a, b) {
 
   if (aParent < bParent) arr[bParent] = aParent;
   else arr[aParent] = bParent;
-}
-
-function findParent(a, b) {
-  const aParent = getParent(a);
-  const bParent = getParent(b);
-
-  if (aParent === bParent) return 1;
-  else return 0;
 }
