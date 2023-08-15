@@ -30,17 +30,6 @@ distances.forEach((dist) => {
 
 console.log(answer);
 
-function gcd(n1, n2) {
-  // 큰 값
-  let a = Math.max(n1, n2);
-  // 작은 값
-  let b = Math.min(n1, n2);
-
-  while (b !== 0) {
-    const tmp = a % b;
-    a = b;
-    b = tmp;
-  }
-
-  return a;
+function gcd(a, b) {
+  return b === 0 ? a : gcd(b, a % b);
 }
